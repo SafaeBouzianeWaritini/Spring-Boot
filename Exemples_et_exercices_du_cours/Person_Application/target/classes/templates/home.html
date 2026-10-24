@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Gestion des Personnes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800" th:text="${message}"></h1>
+            <div class="flex gap-2">
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}" 
+                   class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                   Panneau Admin
+                </a>
+                <a th:href="@{/logout}" 
+                   class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                   Se déconnecter
+                </a>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-gray-700">Liste des Personnes</h2>
+            <a th:href="@{/addPerson}" 
+               class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+               + Ajouter une personne
+            </a>
+        </div>
+
+        <div class="overflow-x-auto border rounded-lg">
+            <table class="w-full text-left text-sm text-gray-600">
+                <thead class="bg-gray-100 uppercase text-xs text-gray-700 border-b">
+                    <tr>
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Nom</th>
+                        <th class="px-6 py-3">Prénom</th>
+                        <th class="px-6 py-3">Adresses</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    <tr th:each="p : ${personnes}" class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium text-gray-900" th:text="${p.num}"></td>
+                        <td class="px-6 py-4" th:text="${p.nom}"></td>
+                        <td class="px-6 py-4" th:text="${p.prenom}"></td>
+                        <td class="px-6 py-4">
+                            <span th:each="a : ${p.adresses}" 
+                                  class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1"
+                                  th:text="${a.ville} + ' (' + ${a.rue} + ')'">
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
